@@ -20,8 +20,16 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ hashFiles('**/pom.xml')}}    
+          restore-keys: |
+            maven-
+
       - name: Build and Run Tests
-        run: mvn clean verify
+        run: mvn clean verify dependency:copy-dependencies
         working-directory: ./back
 
       - name: Upload JaCoCo Coverage Report
@@ -30,11 +38,13 @@ jobs:
           name: jacoco-report
           path: ./back/target/site/jacoco
 
-      - name: Upload Compiled Classes (for Sonar)
+      - name: Upload Compiled classes and dependencies
         uses: actions/upload-artifact@v4
         with:
-          name: compiled-classes
-          path: ./back/target    
+          name: classes-and-dependencies
+          path: |
+            ./back/target/classes
+            ./back/target/dependency
 
   build-test-frontend:
     runs-on: ubuntu-latest
@@ -70,11 +80,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download compiled Java Classes 
+      - name: Download compiled Java classes and dependencies 
         uses: actions/download-artifact@v4
         with:
-          name: compiled-classes
-          path: ./back/target
+          name: classes-and-dependencies
+          path: |
+            ./back/target/classes
+            ./back/target/dependency
              
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.1.0
