@@ -49,7 +49,7 @@ jobs:
         working-directory: ./front
 
       - name: Run tests with coverage
-        run: npm test -- --code-coverage --browsers ChromeHeadless
+        run: npm test -- --code-coverage --browsers ChromeHeadless --watch=false
         working-directory: ./front
 
       - name: Upload coverage report
