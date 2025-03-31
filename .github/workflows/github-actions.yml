@@ -87,7 +87,7 @@ jobs:
           path: ./artifacts
 
       - name: list files
-        run: pwd && ls -a     
+        run: ls -R ./artifacts    
              
 ##      - name: SonarQube Scan
 ##        uses: SonarSource/sonarqube-scan-action@v5.1.0
