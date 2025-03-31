@@ -21,7 +21,7 @@ jobs:
           java-version: '11'
 
       - name: Build and Run Tests
-        run: mvn clean test
+        run: mvn clean verify
         working-directory: ./back
 
       - name: Upload JaCoCo Coverage Report
@@ -29,6 +29,12 @@ jobs:
         with:
           name: jacoco-report
           path: ./back/target/site/jacoco
+
+      - name: Upload Compiled Classes (for Sonar)
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-classes
+          path: ./back/target    
 
   build-test-frontend:
     runs-on: ubuntu-latest
@@ -56,6 +62,7 @@ jobs:
           path: ./front/coverage/bobapp 
 
   sonar-code-quality:
+    needs: [build-test-backend, build-test-frontend]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -63,6 +70,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download compiled Java Classes 
+        uses: actions/download-artifact@v4
+        with:
+          name: compiled-classes
+          path: ./back/target
+             
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.1.0
         env:
