@@ -59,11 +59,6 @@ jobs:
     needs: [build-test-backend, build-test-frontend]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.1.0
         env:
