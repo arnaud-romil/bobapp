@@ -56,6 +56,7 @@ jobs:
           path: ./front/coverage/bobapp 
 
   sonar-code-quality:
+  needs: [build-test-backend, build-test-frontend]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
