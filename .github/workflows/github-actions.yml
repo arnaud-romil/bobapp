@@ -84,15 +84,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: classes-and-dependencies
-          path: ./artifacts
+          path: ./target
 
-      - name: list files
-        run: ls -R ./artifacts    
-             
-##      - name: SonarQube Scan
-##        uses: SonarSource/sonarqube-scan-action@v5.1.0
-##        env:
-##          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}    
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.1.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}    
       
     
 
