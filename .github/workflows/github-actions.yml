@@ -32,19 +32,14 @@ jobs:
         run: mvn clean verify dependency:copy-dependencies
         working-directory: ./back
 
-      - name: Upload JaCoCo Coverage Report
+      - name: Upload Backend Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: jacoco-report
-          path: ./back/target/site/jacoco
-
-      - name: Upload Compiled classes and dependencies
-        uses: actions/upload-artifact@v4
-        with:
-          name: classes-and-dependencies
+          name: backend-artifacts
           path: |
             ./back/target/classes
             ./back/target/dependency
+            ./back/target/site/jacoco/jacoco.xml
 
   build-test-frontend:
     runs-on: ubuntu-latest
@@ -65,11 +60,11 @@ jobs:
         run: npm test -- --code-coverage --browsers ChromeHeadless --watch=false
         working-directory: ./front
 
-      - name: Upload coverage report
+      - name: Upload Frontend Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
-          path: ./front/coverage/bobapp 
+          name: frontend-artifacts
+          path: ./front/coverage/bobapp/lcov.info 
 
   sonar-code-quality:
     needs: [build-test-backend, build-test-frontend]
@@ -80,16 +75,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download compiled Java classes and dependencies 
+      - name: Download Backend Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: classes-and-dependencies
-          path: ./target
+          name: backend-artifacts
+          path: ./artifacts
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.1.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}    
+      - name: Download Frontend Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-artifacts
+          path: ./artifacts    
+
+      - name: List Artifacts
+        run: ls -R ./artifacts    
+
+#      - name: SonarQube Scan
+#        uses: SonarSource/sonarqube-scan-action@v5.1.0
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}    
       
     
 
