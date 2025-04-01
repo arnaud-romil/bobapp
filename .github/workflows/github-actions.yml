@@ -87,13 +87,10 @@ jobs:
           name: frontend-artifacts
           path: ./artifacts    
 
-      - name: List Artifacts
-        run: ls -R ./artifacts    
-
-#      - name: SonarQube Scan
-#        uses: SonarSource/sonarqube-scan-action@v5.1.0
-#        env:
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}    
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.1.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}    
       
     
 
