@@ -115,6 +115,7 @@ jobs:
 
   # Docker build and push job
   docker-push:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' # Runs only on push to main branch
     needs: [sonar-code-quality]  # Runs only if SonarCloud analysis is successful
     runs-on: ubuntu-latest
     steps:
