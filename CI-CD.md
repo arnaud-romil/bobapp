@@ -15,7 +15,7 @@ Le pipeline se compose des étapes suivantes:
 3. **Analyse de la qualité du code avec SonarCloud** - Analyse la qualité du code et la couverture des tests.
 4. **Construction et déploiement des images Docker** - Crée les images Docker pour le frontend et le backend et les envoie sur Docker Hub.
 
-## Étapes détaillées du workflow xxx
+## Étapes détaillées du workflow
 
 1. **Récupération du dépôt**
   - Utilise ```actions/checkout@v4``` pour récupérer la dernière version du code depuis GitHub.

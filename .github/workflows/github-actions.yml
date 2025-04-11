@@ -118,8 +118,6 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' # Runs only on push to main branch
     needs: [sonar-code-quality]  # Runs only if SonarCloud analysis is successful
     runs-on: ubuntu-latest
-
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
